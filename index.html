@@ -1,0 +1,56 @@
+<html>
+<head>
+    
+</head>
+<body>
+    <form id="myForm">
+        My data<br>
+        <p class="paragraph">
+            lkajsdla skdjlad kjadlkajd lakjsd alksdja ldkjad lkajsd alsdkj alkdsj ANTES 
+            <div class="divInput" id="inputNome"></div> 
+            DEPOIS akasjdlkajsdlkajsd
+        </p>
+        <p  class="paragraph">
+            askjdlaksjd alksdja sldkja sdlkajsd lakdsj alskdj alsdkja sdlkajsd alskdj ANTES
+            <div class="divInput" id="inputSobrenome"></div> 
+            DEPOIS askdjlaskdjlaksdj
+        </p>
+    </form>
+    <button id="myButton">Generate</button>  
+
+    <script src="./scripts/FileSaver.js"></script>
+    <script src="./scripts/jquery-3.4.1.min.js"></script>
+    <script src="./scripts/jsPDF-1.3.2/jspdf.js"></script>
+    <script>
+        $( "#myButton" ).click(function() {        
+            $(".divInput").each(function(){
+                var output = $(this).find('output.myOutput').html();
+                $(this).replaceWith(output);
+            });
+
+            $(".paragraph").each(function(){
+                $(this).replaceWith($(this).html());
+            });
+
+            var doc = new jsPDF('landscape', 'mm','a4');
+            doc.text(20, 20, $("#myForm").html());
+
+            doc.save('Test.pdf');
+        });
+
+        $(document).ready(function () {
+            $(".divInput").each(function(){
+                var input = $.parseHTML('<input type="text" id="'+this.id+'" class="myInput"/>');
+                var output = $.parseHTML('<output  id="output-'+this.id+'" class="myOutput"></output>');
+
+                $(input).on('change', function(){
+                    $("#output-"+this.id).val(this.value);
+                })
+
+                $(this).append(input);
+                $(this).append(output);
+            });
+        });
+    </script>
+</body>
+</html>
